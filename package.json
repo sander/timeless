@@ -1,0 +1,17 @@
+{
+  "name": "timeless",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Timeless chat app",
+  "author": "Sander Dijkhuis <mail@sanderdijkhuis.nl>",
+  "dependencies": {
+    "express": "4.10.1",
+    "socket.io": "1.2.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "main": "server.js",
+  "devDependencies": {},
+  "license": "MIT"
+}

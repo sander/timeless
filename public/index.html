@@ -1,0 +1,86 @@
+<!doctype html>
+<title>Timeless chat</title>
+<meta charset="utf-8">
+
+<link href='http://fonts.googleapis.com/css?family=Alegreya+Sans:400,700' rel='stylesheet' type='text/css'>
+<style>
+    body {
+        padding: 0;
+        background: #69d2e7;
+    }
+    body, input {
+        font: 18px 'Alegreya Sans', sans-serif;
+        font-weight: 400;
+    }
+    input {
+        width: 228px;
+    }
+    .person {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .5);
+        border-radius: 3px;
+        width: 240px;
+        padding: 12px;
+        display: inline-block;
+        margin: 12px;
+        background: #e0e4cc;
+        color: #000;
+        vertical-align: top;
+    }
+    .person b {
+        color: #fa6900;
+        font-weight: 700;
+    }
+    #incoming {
+        display: inline-block;
+    }
+</style>
+
+<body>
+
+<div id="people">
+    <div class="person">
+        <b><span id="username"></span>:</b>
+        <input id="send" autofocus>
+    </div>
+    <div id="incoming"></div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io()
+    var user = location.search.substring(1)
+    username.innerText = user
+    socket.emit('all')
+    var divs = {}
+    var sent = ''
+    function set(from, content) {
+        if (!divs[from]) {
+            var d = document.createElement('div')
+            d.className = 'person'
+            incoming.appendChild(d)
+            divs[from] = d
+            d.innerHTML = '<b>' + escape(from) + ':</b> <span class="content"></span>'
+        }
+        divs[from].querySelector('.content').innerText = content
+    }
+    socket.on('message', function(data) {
+        if (data.from == user) {
+            sent = send.value = data.content
+        } else {
+            set(data.from, data.content)
+        }
+    })
+    function check() {
+        if (send.value != sent) {
+            sent = send.value
+            socket.emit('message', {
+                from: user,
+                content: sent
+            })
+        }
+        requestAnimationFrame(check)
+    }
+    requestAnimationFrame(check)
+</script>
+
+</body>
